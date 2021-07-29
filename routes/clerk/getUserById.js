@@ -5,7 +5,7 @@ module.exports = async function (fastify, opts) {
     let clerkUser = await fetch(`https://api.clerk.dev/v1/users/${request.params.id}`, {
       method: 'GET',
       headers: {
-        Authorization: "Bearer test_zvAwkXGjs3gyO4DOG5xv8GqQwjYnV2xjlk",
+        Authorization: `Bearer ${process.env.CLERK_BACKEND_API_PROD}`,
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization"
       }
