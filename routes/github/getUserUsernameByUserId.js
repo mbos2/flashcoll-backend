@@ -5,7 +5,7 @@ module.exports = async function (fastify, opts) {
       method: 'GET',
       headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'token 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',
+      'Authorization': 'token ${process.env.GITHUB_PERSONAL_ACCESS_TOKEN}',
       }
     })
       .then(response => response.json())
