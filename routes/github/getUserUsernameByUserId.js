@@ -1,17 +1,20 @@
 const fetch = require("node-fetch");
+const { request } = require("@octokit/request");
+const {Octokit} = require("@octokit/core");
 module.exports = async function (fastify, opts) {
+  console.log(process.env.GITHUB_PERSONAL_ACCESS_TOKEN);
   fastify.get('/user/:id', async function (request, reply) {
-    await fetch(`https://api.github.com/user/${request.params.id}`,{
-      method: 'GET',
-      headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'token ${process.env.GITHUB_PERSONAL_ACCESS_TOKEN}',
-      }
-    })
-      .then(response => response.json())
-      .then(data => request.body = data);
-    // console.log(gh('https://github.com/mbos2/flashcoll/blob/main/src/testMarkdownUrl.md'));
-    console.log(request, reply);
-    return request.body;
+    const octo = new Octokit({ auth: `${process.env.GITHUB_PERSONAL_ACCESS_TOKEN}` });
+    const result = await octo.request("GET /user/{id}", {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+      "Access-Control-Allow-Credentials": true
+    },
+      id: request.params.id
+    });
+    //return 'this is an example'
+    console.log(result);
+    return result.data;
   })
 }
